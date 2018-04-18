@@ -1,0 +1,86 @@
+// @ts-ignore
+import { getCoverageURL } from 'libcoverage/src/kvp';
+// @ts-ignore
+import { parse } from 'geotiff';
+
+export interface Source {
+  name: string;
+  url: string;
+  coverage: string;
+}
+
+
+export interface Coord {
+  lat: number;
+  log: number;
+  angle: number;
+  resolution: number;
+}
+
+export async function process(sources: Source[], coord: Coord, reduceFunction: Function) {
+  const results = await Promise.all(
+    sources.map(src => request(src, coord))
+  )
+
+  const rasters = results.map(tiff => {
+    const image = tiff.getImage();
+    const raster = image.readRasters()[0];
+    return raster;
+  });
+
+  const iterations = coord.resolution ** 2;
+  const rasterFinal = new Float32Array(iterations);
+  for (let i = 0; i < iterations; i++) {
+    rasterFinal[i] = reduceFunction(i, ...rasters);
+  }
+  return rasterFinal;
+}
+
+async function request(src: Source, coord: Coord) {
+  const response = await fetch(src.url, {
+    method: 'POST',
+    body: getBodyRequest(src.coverage, coord)
+  });
+  const data = await response.arrayBuffer();
+  const tiff = parse(data);
+
+  return tiff;
+}
+
+// const coord = {
+//   lat: 41.6623241,
+//   log: -4.7059912,
+//   angle: 20,
+//   resolution: 320
+// };
+
+function getBodyRequest(coverage: string, coord: Coord, crs = 'EPSG:4326') {
+  return `<?xml version="1.0" encoding="UTF-8"?>
+  <GetCoverage version="1.0.0" service="WCS" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.opengis.net/wcs" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" xsi:schemaLocation="http://www.opengis.net/wcs http://schemas.opengis.net/wcs/1.0.0/getCoverage.xsd">
+
+  <sourceCoverage>${coverage}</sourceCoverage>
+
+  <domainSubset>
+    <spatialSubset>
+      <gml:Envelope srsName="${crs}">
+        <gml:pos>${coord.log - coord.angle} ${coord.lat - coord.angle}</gml:pos>
+        <gml:pos>${coord.log + coord.angle} ${coord.lat + coord.angle}</gml:pos>
+      </gml:Envelope>
+      <gml:Grid dimension="2">
+        <gml:limits>
+          <gml:GridEnvelope>
+            <gml:low>0 0</gml:low>
+            <gml:high>${coord.resolution} ${coord.resolution}</gml:high>
+          </gml:GridEnvelope>
+        </gml:limits>
+        <gml:axisName>x</gml:axisName>
+        <gml:axisName>y</gml:axisName>
+      </gml:Grid>
+    </spatialSubset>
+  </domainSubset>
+  <output>
+    <crs>${crs}</crs>
+    <format>GeoTIFF</format>
+  </output>
+</GetCoverage>`
+}
