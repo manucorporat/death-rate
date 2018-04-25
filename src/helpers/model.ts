@@ -23,6 +23,7 @@ export async function process(sources: Source[], coord: Coord, reduceFunction: F
   )
 
   const rasters = results.map(tiff => {
+    debugger;
     const image = tiff.getImage();
     const raster = image.readRasters()[0];
     return raster;

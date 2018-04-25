@@ -25,32 +25,39 @@ declare global {
 
 import 'ionicons';
 import '@ionic/core';
+import '@pro-webcomponents/core';
 
 import {
   EventEmitter,
 } from '@stencil/core';
 
 declare global {
-  interface HTMLAppHomeElement extends HTMLStencilElement {
 
+  namespace StencilComponents {
+    interface DeathPage {
+
+    }
   }
-  var HTMLAppHomeElement: {
-    prototype: HTMLAppHomeElement;
-    new (): HTMLAppHomeElement;
+
+  interface HTMLDeathPageElement extends StencilComponents.DeathPage, HTMLStencilElement {}
+
+  var HTMLDeathPageElement: {
+    prototype: HTMLDeathPageElement;
+    new (): HTMLDeathPageElement;
   };
   interface HTMLElementTagNameMap {
-    'app-home': HTMLAppHomeElement;
+    'death-page': HTMLDeathPageElement;
   }
   interface ElementTagNameMap {
-    'app-home': HTMLAppHomeElement;
+    'death-page': HTMLDeathPageElement;
   }
   namespace JSX {
     interface IntrinsicElements {
-      'app-home': JSXElements.AppHomeAttributes;
+      'death-page': JSXElements.DeathPageAttributes;
     }
   }
   namespace JSXElements {
-    export interface AppHomeAttributes extends HTMLAttributes {
+    export interface DeathPageAttributes extends HTMLAttributes {
 
     }
   }
@@ -58,38 +65,50 @@ declare global {
 
 
 declare global {
-  interface HTMLAppProfileElement extends HTMLStencilElement {
-    'name': string;
+
+  namespace StencilComponents {
+    interface LandingPage {
+
+    }
   }
-  var HTMLAppProfileElement: {
-    prototype: HTMLAppProfileElement;
-    new (): HTMLAppProfileElement;
+
+  interface HTMLLandingPageElement extends StencilComponents.LandingPage, HTMLStencilElement {}
+
+  var HTMLLandingPageElement: {
+    prototype: HTMLLandingPageElement;
+    new (): HTMLLandingPageElement;
   };
   interface HTMLElementTagNameMap {
-    'app-profile': HTMLAppProfileElement;
+    'landing-page': HTMLLandingPageElement;
   }
   interface ElementTagNameMap {
-    'app-profile': HTMLAppProfileElement;
+    'landing-page': HTMLLandingPageElement;
   }
   namespace JSX {
     interface IntrinsicElements {
-      'app-profile': JSXElements.AppProfileAttributes;
+      'landing-page': JSXElements.LandingPageAttributes;
     }
   }
   namespace JSXElements {
-    export interface AppProfileAttributes extends HTMLAttributes {
-      'name'?: string;
+    export interface LandingPageAttributes extends HTMLAttributes {
+
     }
   }
 }
 
 
 declare global {
-  interface HTMLLazyImgElement extends HTMLStencilElement {
-    'alt': string;
-    'src': string;
-    'width': number;
+
+  namespace StencilComponents {
+    interface LazyImg {
+      'alt': string;
+      'src': string;
+      'width': number;
+    }
   }
+
+  interface HTMLLazyImgElement extends StencilComponents.LazyImg, HTMLStencilElement {}
+
   var HTMLLazyImgElement: {
     prototype: HTMLLazyImgElement;
     new (): HTMLLazyImgElement;
@@ -117,9 +136,81 @@ declare global {
 
 
 declare global {
-  interface HTMLMyAppElement extends HTMLStencilElement {
 
+  namespace StencilComponents {
+    interface LoginPage {
+
+    }
   }
+
+  interface HTMLLoginPageElement extends StencilComponents.LoginPage, HTMLStencilElement {}
+
+  var HTMLLoginPageElement: {
+    prototype: HTMLLoginPageElement;
+    new (): HTMLLoginPageElement;
+  };
+  interface HTMLElementTagNameMap {
+    'login-page': HTMLLoginPageElement;
+  }
+  interface ElementTagNameMap {
+    'login-page': HTMLLoginPageElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'login-page': JSXElements.LoginPageAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface LoginPageAttributes extends HTMLAttributes {
+
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
+    interface MapPage {
+
+    }
+  }
+
+  interface HTMLMapPageElement extends StencilComponents.MapPage, HTMLStencilElement {}
+
+  var HTMLMapPageElement: {
+    prototype: HTMLMapPageElement;
+    new (): HTMLMapPageElement;
+  };
+  interface HTMLElementTagNameMap {
+    'map-page': HTMLMapPageElement;
+  }
+  interface ElementTagNameMap {
+    'map-page': HTMLMapPageElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'map-page': JSXElements.MapPageAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface MapPageAttributes extends HTMLAttributes {
+
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
+    interface MyApp {
+
+    }
+  }
+
+  interface HTMLMyAppElement extends StencilComponents.MyApp, HTMLStencilElement {}
+
   var HTMLMyAppElement: {
     prototype: HTMLMyAppElement;
     new (): HTMLMyAppElement;
@@ -138,6 +229,39 @@ declare global {
   namespace JSXElements {
     export interface MyAppAttributes extends HTMLAttributes {
 
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
+    interface ProfilePage {
+      'name': string;
+    }
+  }
+
+  interface HTMLProfilePageElement extends StencilComponents.ProfilePage, HTMLStencilElement {}
+
+  var HTMLProfilePageElement: {
+    prototype: HTMLProfilePageElement;
+    new (): HTMLProfilePageElement;
+  };
+  interface HTMLElementTagNameMap {
+    'profile-page': HTMLProfilePageElement;
+  }
+  interface ElementTagNameMap {
+    'profile-page': HTMLProfilePageElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'profile-page': JSXElements.ProfilePageAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface ProfilePageAttributes extends HTMLAttributes {
+      'name'?: string;
     }
   }
 }

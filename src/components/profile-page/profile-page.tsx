@@ -5,10 +5,10 @@ import { urlB64ToUint8Array } from '../../helpers/utils';
 
 
 @Component({
-  tag: 'app-profile',
-  styleUrl: 'app-profile.scss'
+  tag: 'profile-page',
+  styleUrl: 'profile-page.scss'
 })
-export class AppProfile {
+export class ProfilePage {
 
   @Prop({ connect: 'ion-toast-controller' }) toastCtrl: ToastController;
   @Prop() name: string;
@@ -67,30 +67,28 @@ export class AppProfile {
   }
 
   render() {
-    return (
-      <ion-page>
-        <ion-header>
-          <ion-toolbar color='primary'>
-            <ion-buttons slot="start">
-              <ion-back-button defaultHref='/'></ion-back-button>
-            </ion-buttons>
+    return [
+      <ion-header>
+        <ion-toolbar color='primary'>
+          <ion-buttons slot="start">
+            <ion-back-button defaultHref='/'></ion-back-button>
+          </ion-buttons>
 
-            <ion-title>Ionic PWA Toolkit</ion-title>
-          </ion-toolbar>
-        </ion-header>
+          <ion-title>Ionic PWA Toolkit</ion-title>
+        </ion-toolbar>
+      </ion-header>,
 
-        <ion-content>
-          <p>
-            Hello! My name is {this.name}.
-            My name was passed in through a route param!
-            </p>
+      <ion-content>
+        <p>
+          Hello! My name is {this.name}.
+          My name was passed in through a route param!
+          </p>
 
-          {this.swSupport ? <ion-item>
-            <ion-label>Notifications</ion-label>
-            <ion-toggle checked={this.notify} disabled={this.notify}></ion-toggle>
-          </ion-item> : null}
-        </ion-content>
-      </ion-page>
-    );
+        {this.swSupport ? <ion-item>
+          <ion-label>Notifications</ion-label>
+          <ion-toggle checked={this.notify} disabled={this.notify}></ion-toggle>
+        </ion-item> : null}
+      </ion-content>
+    ];
   }
 }

@@ -16,8 +16,9 @@
     "test.watch": "jest --watch --no-cache"
   },
   "dependencies": {
-    "@ionic/core": "^0.1.4",
-    "@stencil/core": "0.7.7",
+    "@ionic/core": "4.0.0-alpha.2",
+    "@pro-webcomponents/core": "^0.2.0",
+    "@stencil/core": "0.7.24",
     "@stencil/router": "latest",
     "geotiff": "^0.4.1",
     "libcoverage": "^0.1.10",
@@ -25,7 +26,7 @@
   },
   "devDependencies": {
     "@stencil/dev-server": "latest",
-    "@stencil/sass": "0.0.2",
+    "@stencil/sass": "0.0.3",
     "@stencil/utils": "latest",
     "@types/jest": "^21.1.1",
     "jest": "^21.2.1"
