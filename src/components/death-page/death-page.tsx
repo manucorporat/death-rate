@@ -1,7 +1,9 @@
 import { Component, Element, State } from '@stencil/core';
-// import { Source } from '../../helpers/model';
+import { process, getCurrentCoord } from '../../helpers/model';
 // @ts-ignore
 import plotty from 'plotty';
+import { SOURCES } from '../../helpers/sources';
+import { setGoogleMaps } from '../../helpers/google-maps';
 
 // declare var google: any;
 
@@ -14,238 +16,27 @@ export class DeathPage {
 
   @State() time = 0;
   @State() y = 350;
-
-  // async componentWillLoad() {
-  //   await getGoogleMaps('AIzaSyB8pf6ZdFQj5qw7rc_HSGrhUwQKfIe9ICw');
-  // }
+  @State() score = 0;
 
   async componentDidLoad() {
-    requestAnimationFrame(async () => {
-      const googleMaps = await getGoogleMaps('AIzaSyB8pf6ZdFQj5qw7rc_HSGrhUwQKfIe9ICw');
-      const mapEle = this.el.querySelector('.map-canvas');
-      new googleMaps.Map(mapEle, {
-        zoom: 15,
-        disableDefaultUI: true,
-        center: {lat: 41.652251, lng: -4.7245321},
-        styles: [
-          {
-              "stylers": [
-                  {
-                      "hue": "#B61530"
-                  },
-                  {
-                      "saturation": 60
-                  },
-                  {
-                      "lightness": -40
-                  }
-              ]
-          },
-          {
-              "elementType": "labels.text.fill",
-              "stylers": [
-                  {
-                      "color": "#ffffff"
-                  }
-              ]
-          },
-          {
-              "featureType": "water",
-              "stylers": [
-                  {
-                      "color": "#B61530"
-                  }
-              ]
-          },
-          {
-              "featureType": "road",
-              "stylers": [
-                  {
-                      "color": "#B61530"
-                  },
-                  {}
-              ]
-          },
-          {
-              "featureType": "road.local",
-              "stylers": [
-                  {
-                      "color": "#B61530"
-                  },
-                  {
-                      "lightness": 6
-                  }
-              ]
-          },
-          {
-              "featureType": "road.highway",
-              "stylers": [
-                  {
-                      "color": "#B61530"
-                  },
-                  {
-                      "lightness": -25
-                  }
-              ]
-          },
-          {
-              "featureType": "road.arterial",
-              "stylers": [
-                  {
-                      "color": "#B61530"
-                  },
-                  {
-                      "lightness": -10
-                  }
-              ]
-          },
-          {
-              "featureType": "transit",
-              "stylers": [
-                  {
-                      "color": "#B61530"
-                  },
-                  {
-                      "lightness": 70
-                  }
-              ]
-          },
-          {
-              "featureType": "transit.line",
-              "stylers": [
-                  {
-                      "color": "#B61530"
-                  },
-                  {
-                      "lightness": 90
-                  }
-              ]
-          },
-          {
-              "featureType": "administrative.country",
-              "elementType": "labels",
-              "stylers": [
-                  {
-                      "visibility": "off"
-                  }
-              ]
-          },
-          {
-              "featureType": "transit.station",
-              "elementType": "labels.text.stroke",
-              "stylers": [
-                  {
-                      "visibility": "off"
-                  }
-              ]
-          },
-          {
-              "featureType": "transit.station",
-              "elementType": "labels.text.fill",
-              "stylers": [
-                  {
-                      "color": "#ffffff"
-                  }
-              ]
-          }
-      ]
-      });
-      // requestAnimationFrame(() => {
-      //   const mapEle = this.el.querySelector('.map-canvas');
-      //   new google.maps.Map(mapEle, {
-      //     center: {lat: -25.363, lng: 131.044}
-      //   });
-      // });
+    const coord = await getCurrentCoord(20, 2);
+    setGoogleMaps(this.el.querySelector('.map-canvas'), coord);
+
+    const raster = await process(SOURCES, coord, reduce);
+    const media = average(raster);
+    const min = Math.min(...raster);
+    const max = Math.max(...raster);
+
+    const render = new plotty.plot({
+      canvas: this.el.querySelector('canvas'),
+      data: raster,
+      width: 2, height: 2,
+      domain: [min, max], colorScale: "greys"
     });
+    render.render();
+    this.score = media;
+    console.log(media);
   }
-  // async componentDidLoad() {
-  //   const sources: Source[] = [
-  //     {
-  //       name: 'volcanes',
-  //       url: 'http://sedac.ciesin.org/geoserver/ows',
-  //       coverage: 'ndh:ndh-volcano-mortality-risks-distribution'
-  //     },
-  //     {
-  //       name: 'corrimiento',
-  //       url: 'http://sedac.ciesin.org/geoserver/ows',
-  //       coverage: 'ndh:ndh-landslide-mortality-risks-distribution'
-  //     },
-  //     {
-  //       name: 'Inundaciones',
-  //       url: 'http://sedac.ciesin.org/geoserver/ows',
-  //       coverage: 'ndh:ndh-flood-mortality-risks-distribution',
-  //     },
-  //     {
-  //       name: 'Terremotos',
-  //       url: 'http://sedac.ciesin.org/geoserver/ows',
-  //       coverage: 'ndh:ndh-earthquake-mortality-risks-distribution'
-  //     },
-  //     {
-  //       name: 'Sequías',
-  //       url: 'http://sedac.ciesin.org/geoserver/ows',
-  //       coverage: 'ndh:ndh-drought-mortality-risks-distribution'
-  //     },
-  //     {
-  //       name: 'Ciclones',
-  //       url: 'http://sedac.ciesin.org/geoserver/ows',
-  //       coverage: 'ndh:ndh-cyclone-mortality-risks-distribution'
-  //     },
-  //     {
-  //       name: 'Malnutricion infantil',
-  //       url: 'http://sedac.ciesin.org/geoserver/ows',
-  //       coverage: 'povmap:povmap-global-subnational-prevalence-child-malnutrition'
-  //     },
-  //     {
-  //       name: 'Mortalidad infantil',
-  //       url: 'http://sedac.ciesin.org/geoserver/ows',
-  //       coverage: 'povmap:povmap-global-subnational-infant-mortality-rates_2000'
-  //     },
-  //     {
-  //       name: 'Temp Max',
-  //       url: 'http://sedac.ciesin.org/geoserver/ows',
-  //       coverage: 'sdei:sdei-global-summer-lst-2013_day-max-global'
-  //     },
-  //     {
-  //       name: 'Temp Min',
-  //       url: 'http://sedac.ciesin.org/geoserver/ows',
-  //       coverage: 'sdei:sdei-global-summer-lst-2013_night-min-global'
-  //     }
-  //   ];
-
-  //   const coord = {
-  //     lat: 41.6623241,
-  //     log: -4.7059912,
-  //     angle: 20,
-  //     resolution: 320
-  //   };
-  //   // const coord = {
-  //   //   lat: -7,
-  //   //   log: 112,
-  //   //   angle: 2,
-  //   //   resolution: 320
-  //   // };
-  //   // const coord = {
-  //   //   lat: 0,
-  //   //   log: 0,
-  //   //   angle: 20,
-  //   //   resolution: 320
-  //   // };
-
-  //   // const raster = await process(sources, coord, reduce);
-  //   // const media = average(raster);
-
-  //   // const min = Math.min(...raster);
-  //   // const max = Math.max(...raster);
-
-  //   // const render = new plotty.plot({
-  //   //   canvas: this.el.querySelector('canvas'),
-  //   //   data: raster,
-  //   //   width: 320, height: 320,
-  //   //   domain: [min, max], colorScale: "greys"
-  //   // });
-  //   // render.render();
-  //   // console.log(media);
-  // }
 
   render() {
     requestAnimationFrame((t) => {
@@ -276,7 +67,7 @@ export class DeathPage {
             }}>
             <div class='rate'>
               <div class="line"></div>
-              <div class="score">120</div>
+              <div class="score">{this.score}</div>
               <div class="line"></div>
             </div>
           </pro-glshader>
@@ -324,28 +115,3 @@ void main() {
     }
 }
 `;
-
-export function getGoogleMaps(apiKey: string): Promise<any> {
-  const win = window as any;
-  const google = win.google;
-  if (google && google.maps) {
-    return Promise.resolve(google.maps);
-  }
-
-  return new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}`;
-    script.async = true;
-    script.defer = true;
-    document.head.appendChild(script);
-    script.onload = () => {
-      const win = window as any;
-      const google = win.google;
-      if (google && google.maps) {
-        resolve(google.maps);
-      } else {
-        reject('google maps not available');
-      }
-    };
-  });
-}

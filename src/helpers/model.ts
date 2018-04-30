@@ -23,7 +23,6 @@ export async function process(sources: Source[], coord: Coord, reduceFunction: F
   )
 
   const rasters = results.map(tiff => {
-    debugger;
     const image = tiff.getImage();
     const raster = image.readRasters()[0];
     return raster;
@@ -48,6 +47,21 @@ async function request(src: Source, coord: Coord) {
   return tiff;
 }
 
+export function getCurrentCoord(angle: number, resolution: number): Promise<Coord> {
+  if (!("geolocation" in navigator)) {
+    throw new Error('geolocation not available')
+  }
+  return new Promise(resolve => {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      resolve({
+        lat:position.coords.latitude,
+        log: position.coords.longitude,
+        angle,
+        resolution
+      });
+    });
+  });
+}
 // const coord = {
 //   lat: 41.6623241,
 //   log: -4.7059912,
