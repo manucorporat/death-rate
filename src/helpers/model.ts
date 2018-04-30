@@ -17,6 +17,18 @@ export interface Coord {
   resolution: number;
 }
 
+const INVALID = 0;
+function filterRaster(raster: Float32Array, invalid: number): Float32Array{
+  
+  for (let i = 0; i < raster.length; i++){
+    if (raster[i] === invalid){
+      raster[i] = INVALID;
+    }
+  }
+  return raster;
+}
+
+
 export async function process(sources: Source[], coord: Coord, reduceFunction: Function) {
   const results = await Promise.all(
     sources.map(src => request(src, coord))
@@ -25,6 +37,10 @@ export async function process(sources: Source[], coord: Coord, reduceFunction: F
   const rasters = results.map(tiff => {
     const image = tiff.getImage();
     const raster = image.readRasters()[0];
+    const invalid = image.fileDirectory["GDAL_NODATA"];
+    if (invalid) {
+      return filterRaster(raster, parseFloat(invalid));
+    }
     return raster;
   });
 

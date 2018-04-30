@@ -4,6 +4,7 @@ import { process, getCurrentCoord } from '../../helpers/model';
 import plotty from 'plotty';
 import { SOURCES } from '../../helpers/sources';
 import { setGoogleMaps } from '../../helpers/google-maps';
+import { reduce } from '../../helpers/formula';
 
 // declare var google: any;
 
@@ -34,7 +35,7 @@ export class DeathPage {
       domain: [min, max], colorScale: "greys"
     });
     render.render();
-    this.score = media;
+    this.score = Math.floor(media);
     console.log(media);
   }
 
@@ -75,27 +76,6 @@ export class DeathPage {
     ];
   }
 }
-
-export function reduce(i,
-  volcanes, corrimientos, inundaciones, terremotos, sequias, ciclones,
-  malnutricion, mortalidad, tempMax, tempMin
-) {
-  return (
-    Math.exp(volcanes[i] * 1.6 - 5) +
-    Math.exp(corrimientos[i] * 1.6 - 5) +
-    Math.exp(inundaciones[i] * 1.6 - 5) +
-    Math.exp(terremotos[i] * 1.6 - 5) +
-    Math.exp(sequias[i] * 1.6 - 5) +
-    Math.exp(ciclones[i] * (16/3.0) - 5) +
-
-    malnutricion[i] * 17000 +
-    mortalidad[i] * 12500 +
-
-    Math.abs(Math.pow((tempMax[i] - 24) / 1.7, 3)) +
-    Math.abs(Math.pow((tempMin[i] - 15) / 1.7, 3))
-  );
-}
-
 
 export function average(raster: Float32Array) {
   return raster.reduce((v, acum) => acum + v, 0) / raster.length
