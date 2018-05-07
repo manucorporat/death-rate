@@ -1,17 +1,22 @@
 import { Component, Element, State } from '@stencil/core';
-import { process, getCurrentCoord } from '../../helpers/model';
+import { process, getCurrentCoord, getInsertQuery, Coord } from '../../helpers/model';
 // @ts-ignore
 import plotty from 'plotty';
 import { SOURCES } from '../../helpers/sources';
 import { setGoogleMaps } from '../../helpers/google-maps';
 import { reduce } from '../../helpers/formula';
-
+import { User } from '../../helpers/model';
 // declare var google: any;
 
 @Component({
   tag: 'death-page',
   styleUrl: 'death-page.scss'
 })
+
+
+
+
+
 export class DeathPage {
   @Element() el: HTMLElement;
 
@@ -37,6 +42,16 @@ export class DeathPage {
     render.render();
     this.score = Math.floor(media);
     console.log(media);
+    this.insertDeathRate(coord, media);
+  }
+
+  async insertDeathRate(coord : Coord, deathRate : number){
+    const USER: User = {
+      name: 'prueba',
+      deathRate: deathRate,
+      coord: coord
+    }
+    getInsertQuery("itastdevserver.tel.uva.es", USER);
   }
 
   render() {
