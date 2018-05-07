@@ -2,7 +2,7 @@
 import { getCoverageURL } from 'libcoverage/src/kvp';
 // @ts-ignore
 import { parse } from 'geotiff';
-import { Url } from '@stencil/core/dist/declarations';
+//import { Url } from '@stencil/core/dist/declarations';
 
 export interface Source {
   name: string;
