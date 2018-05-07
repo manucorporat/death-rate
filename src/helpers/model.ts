@@ -2,6 +2,7 @@
 import { getCoverageURL } from 'libcoverage/src/kvp';
 // @ts-ignore
 import { parse } from 'geotiff';
+import { Url } from '@stencil/core/dist/declarations';
 
 export interface Source {
   name: string;
@@ -62,6 +63,17 @@ async function request(src: Source, coord: Coord) {
   const tiff = parse(data);
 
   return tiff;
+}
+
+export async function insertQuery(hostname : string , user : User){
+  const body = getInsertQuery(hostname, user);
+  const url = `${hostname}/ide2018a/ows`;
+
+  await fetch(url, {
+    method: 'POST',
+    body: body
+  });
+
 }
 
 export function getCurrentCoord(angle: number, resolution: number): Promise<Coord> {
@@ -137,7 +149,7 @@ export interface User {
 //   // http://localhost:8080/geoserver/wfs
 // }
 
-export function getInsertQuery(hostname: string, user: User) {
+function getInsertQuery(hostname: string, user: User) {
   const date = '2018-12-12'; // TODO
   return `
   <wfs:Transaction service="WFS" version="1.0.0"
@@ -145,7 +157,7 @@ export function getInsertQuery(hostname: string, user: User) {
   xmlns:DeathRate="http://itastdevserver.tel.uva.es/IDE2018A"
   xmlns:gml="http://www.opengis.net/gml"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-transaction.xsd http://itastdevserver.tel.uva.es/IDE2018A https://${hostname}/geoserver/wfs/DescribeFeatureType?typename=ide2018a:table_history">
+  xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-transaction.xsd http://itastdevserver.tel.uva.es/IDE2018A ${hostname}/wfs/DescribeFeatureType?typename=ide2018a:table_history">
   <wfs:Insert>
     <DeathRate:table_history>
       <DeathRate:position>

@@ -1,5 +1,5 @@
 import { Component, Element, State } from '@stencil/core';
-import { process, getCurrentCoord, getInsertQuery, Coord } from '../../helpers/model';
+import { process, getCurrentCoord, insertQuery, Coord } from '../../helpers/model';
 // @ts-ignore
 import plotty from 'plotty';
 import { SOURCES } from '../../helpers/sources';
@@ -51,7 +51,7 @@ export class DeathPage {
       deathRate: deathRate,
       coord: coord
     }
-    getInsertQuery("itastdevserver.tel.uva.es", USER);
+    insertQuery("https://itastdevserver.tel.uva.es/geoserver/", USER);
   }
 
   render() {
