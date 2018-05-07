@@ -74,7 +74,7 @@ export class ProfilePage {
             <ion-back-button defaultHref='/'></ion-back-button>
           </ion-buttons>
 
-          <ion-title>Ionic PWA Toolkit</ion-title>
+          <ion-title>Death Rate App</ion-title>
         </ion-toolbar>
       </ion-header>,
 
