@@ -102,51 +102,26 @@ export class LoginPage {
 
   render() {
     return [
-        <ion-header>
-          <ion-toolbar color='danger'>
-            <ion-title>Death Rate</ion-title>
-          </ion-toolbar>
-        </ion-header>,
+      <ion-header>
+        <ion-toolbar color='danger'>
+          <ion-title>Death Rate</ion-title>
+        </ion-toolbar>
+      </ion-header>,
 
-        <ion-content>
-          <p>
-            Welcome to the Ionic PWA Toolkit.
-            You can use this starter to build entire PWAs all with
-            web components using Stencil and ionic/core! Check out the readme for everything that comes in this starter out of the box and
-            Check out our docs on <a href='https://stenciljs.com'>stenciljs.com</a> to get started.
-          </p>
+      <ion-content>
+        <p>
+          Welcome to the Ionic PWA Toolkit.
+          You can use this starter to build entire PWAs all with
+          web components using Stencil and ionic/core! Check out the readme for everything that comes in this starter out of the box and
+          Check out our docs on <a href='https://stenciljs.com'>stenciljs.com</a> to get started.
+        </p>
 
-          <canvas></canvas>
+        <canvas></canvas>
 
-          <ion-button href={'/profile/stencil'}>
-            Profile page
-          </ion-button>
-        </ion-content>
+        <ion-button href={'/profile/stencil'}>
+          Profile page
+        </ion-button>
+      </ion-content>
     ];
   }
-}
-
-export function reduce(i,
-  volcanes, corrimientos, inundaciones, terremotos, sequias, ciclones,
-  malnutricion, mortalidad, tempMax, tempMin
-) {
-  return (
-    Math.exp(volcanes[i] * 1.6 - 5) +
-    Math.exp(corrimientos[i] * 1.6 - 5) +
-    Math.exp(inundaciones[i] * 1.6 - 5) +
-    Math.exp(terremotos[i] * 1.6 - 5) +
-    Math.exp(sequias[i] * 1.6 - 5) +
-    Math.exp(ciclones[i] * (16/3.0) - 5) +
-
-    malnutricion[i] * 17000 +
-    mortalidad[i] * 12500 +
-
-    Math.abs(Math.pow((tempMax[i] - 24) / 1.7, 3)) +
-    Math.abs(Math.pow((tempMin[i] - 15) / 1.7, 3))
-  );
-}
-
-
-export function average(raster: Float32Array) {
-  return raster.reduce((v, acum) => acum + v, 0) / raster.length
 }

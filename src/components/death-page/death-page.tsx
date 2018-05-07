@@ -44,35 +44,35 @@ export class DeathPage {
       this.time = t;
     });
     return [
-        <ion-header>
-          <ion-toolbar color='danger'>
-            <ion-title>Tu localización</ion-title>
-          </ion-toolbar>
-          <ion-toolbar color='danger'>
-            <div class='address'>
+      <ion-header>
+        <ion-toolbar color='danger'>
+          <ion-title>Tu localización</ion-title>
+        </ion-toolbar>
+        <ion-toolbar color='danger'>
+          <div class='address'>
               <p>Paseo del Cauce</p>
               <p>Valladoid, 47003</p>
               <p>España</p>
-            </div>
-          </ion-toolbar>
-        </ion-header>,
+          </div>
+        </ion-toolbar>
+      </ion-header>,
 
-        <ion-content scrollEnabled={false}>
-          <div class="map-canvas"></div>
-          <pro-glshader
-            class="blood-shader"
-            frag={WAVE_SHADER}
-            uniforms={{
+      <ion-content scrollEnabled={false}>
+        <div class="map-canvas"></div>
+        <pro-glshader
+          class="blood-shader"
+          frag={WAVE_SHADER}
+          uniforms={{
               '1f:u_time': this.time,
               '1f:u_y': this.y
-            }}>
-            <div class='rate'>
-              <div class="line"></div>
-              <div class="score">{this.score}</div>
-              <div class="line"></div>
-            </div>
-          </pro-glshader>
-        </ion-content>
+          }}>
+          <div class='rate'>
+            <div class="line"></div>
+            <div class="score">{this.score}</div>
+            <div class="line"></div>
+          </div>
+        </pro-glshader>
+      </ion-content>
     ];
   }
 }

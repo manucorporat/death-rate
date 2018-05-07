@@ -27,9 +27,6 @@ import 'ionicons';
 import '@ionic/core';
 import '@pro-webcomponents/core';
 
-import {
-  EventEmitter,
-} from '@stencil/core';
 
 declare global {
 
@@ -92,44 +89,6 @@ declare global {
   namespace JSXElements {
     export interface LandingPageAttributes extends HTMLAttributes {
 
-    }
-  }
-}
-
-
-declare global {
-
-  namespace StencilComponents {
-    interface LazyImg {
-      'alt': string;
-      'src': string;
-      'width': number;
-    }
-  }
-
-  interface HTMLLazyImgElement extends StencilComponents.LazyImg, HTMLStencilElement {}
-
-  var HTMLLazyImgElement: {
-    prototype: HTMLLazyImgElement;
-    new (): HTMLLazyImgElement;
-  };
-  interface HTMLElementTagNameMap {
-    'lazy-img': HTMLLazyImgElement;
-  }
-  interface ElementTagNameMap {
-    'lazy-img': HTMLLazyImgElement;
-  }
-  namespace JSX {
-    interface IntrinsicElements {
-      'lazy-img': JSXElements.LazyImgAttributes;
-    }
-  }
-  namespace JSXElements {
-    export interface LazyImgAttributes extends HTMLAttributes {
-      'alt'?: string;
-      'onLazyImgloaded'?: (event: CustomEvent<HTMLImageElement>) => void;
-      'src'?: string;
-      'width'?: number;
     }
   }
 }
@@ -229,39 +188,6 @@ declare global {
   namespace JSXElements {
     export interface MyAppAttributes extends HTMLAttributes {
 
-    }
-  }
-}
-
-
-declare global {
-
-  namespace StencilComponents {
-    interface ProfilePage {
-      'name': string;
-    }
-  }
-
-  interface HTMLProfilePageElement extends StencilComponents.ProfilePage, HTMLStencilElement {}
-
-  var HTMLProfilePageElement: {
-    prototype: HTMLProfilePageElement;
-    new (): HTMLProfilePageElement;
-  };
-  interface HTMLElementTagNameMap {
-    'profile-page': HTMLProfilePageElement;
-  }
-  interface ElementTagNameMap {
-    'profile-page': HTMLProfilePageElement;
-  }
-  namespace JSX {
-    interface IntrinsicElements {
-      'profile-page': JSXElements.ProfilePageAttributes;
-    }
-  }
-  namespace JSXElements {
-    export interface ProfilePageAttributes extends HTMLAttributes {
-      'name'?: string;
     }
   }
 }
