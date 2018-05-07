@@ -2,6 +2,7 @@
 import { getCoverageURL } from 'libcoverage/src/kvp';
 // @ts-ignore
 import { parse } from 'geotiff';
+//import { Url } from '@stencil/core/dist/declarations';
 
 export interface Source {
   name: string;
@@ -44,6 +45,7 @@ export async function process(sources: Source[], coord: Coord, reduceFunction: F
     return raster;
   });
 
+
   const iterations = coord.resolution ** 2;
   const rasterFinal = new Float32Array(iterations);
   for (let i = 0; i < iterations; i++) {
@@ -61,6 +63,17 @@ async function request(src: Source, coord: Coord) {
   const tiff = parse(data);
 
   return tiff;
+}
+
+export async function insertQuery(hostname : string , user : User){
+  const body = getInsertQuery(hostname, user);
+  const url = `${hostname}/ide2018a/ows`;
+
+  await fetch(url, {
+    method: 'POST',
+    body: body
+  });
+
 }
 
 export function getCurrentCoord(angle: number, resolution: number): Promise<Coord> {
@@ -124,7 +137,7 @@ function getBodyRequest(coverage: string, coord: Coord, crs = 'EPSG:4326') {
 }
 
 
-interface User {
+export interface User {
   name: string;
   deathRate: number;
   coord: Coord;
@@ -143,15 +156,15 @@ interface User {
 //   // http://localhost:8080/geoserver/wfs
 // }
 
-export function getInsertQuery(hostname: string, user: User) {
+function getInsertQuery(hostname: string, user: User) {
   const date = '2018-12-12'; // TODO
   return `
   <wfs:Transaction service="WFS" version="1.0.0"
   xmlns:wfs="http://www.opengis.net/wfs"
-  xmlns:DeathRate="es.uva.tel.DeathRate"
+  xmlns:DeathRate="http://itastdevserver.tel.uva.es/IDE2018A"
   xmlns:gml="http://www.opengis.net/gml"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-transaction.xsd es.uva.tel.DeathRate http://${hostname}/geoserver/wfs/DescribeFeatureType?typename=DeathRate:table_history">
+  xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-transaction.xsd http://itastdevserver.tel.uva.es/IDE2018A ${hostname}/wfs/DescribeFeatureType?typename=ide2018a:table_history">
   <wfs:Insert>
     <DeathRate:table_history>
       <DeathRate:position>
