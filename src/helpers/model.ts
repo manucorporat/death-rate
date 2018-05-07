@@ -44,8 +44,6 @@ export async function process(sources: Source[], coord: Coord, reduceFunction: F
     return raster;
   });
 
-  debugger;
-
   const iterations = coord.resolution ** 2;
   const rasterFinal = new Float32Array(iterations);
   for (let i = 0; i < iterations; i++) {
@@ -72,7 +70,7 @@ export function getCurrentCoord(angle: number, resolution: number): Promise<Coor
   return new Promise(resolve => {
     navigator.geolocation.getCurrentPosition(function(position) {
       resolve({
-        lat:position.coords.latitude,
+        lat: position.coords.latitude,
         log: position.coords.longitude,
         angle,
         resolution
@@ -86,6 +84,13 @@ export function getCurrentCoord(angle: number, resolution: number): Promise<Coor
 //   angle: 20,
 //   resolution: 320
 // };
+
+export function getExtends(coord: Coord) {
+  return [
+    coord.log - coord.angle, coord.lat - coord.angle,
+    coord.log + coord.angle, coord.lat + coord.angle
+  ];
+}
 
 function getBodyRequest(coverage: string, coord: Coord, crs = 'EPSG:4326') {
   return `<?xml version="1.0" encoding="UTF-8"?>

@@ -32,7 +32,8 @@ export class DeathPage {
       canvas: this.el.querySelector('canvas'),
       data: raster,
       width: 2, height: 2,
-      domain: [min, max], colorScale: "greys"
+      domain: [min, max],
+      colorScale: "greys"
     });
     render.render();
     this.score = Math.floor(media);

@@ -1,5 +1,11 @@
-app-home {
-  ion-scroll {
-    padding: 15px;
+map-page {
+  .scroll-inner {
+    height: 100%;
+    width: 100%;
+  }
+
+  .mapa {
+    height: 100%;
+    width: 100%;
   }
 }
