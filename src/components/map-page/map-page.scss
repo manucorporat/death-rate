@@ -8,4 +8,16 @@ map-page {
     height: 100%;
     width: 100%;
   }
+
+  canvas{
+    display: none;
+  }
+
+  .refresh-fab {
+    transition: transform 100ms ease-in-out;
+  }
+
+  .hidden-fab {
+    transform: translateY(70px)
+  }
 }

@@ -4,6 +4,13 @@ death-page {
     height: 100%;
   }
 
+  .mapa {
+    height: 100%;
+    width: 100%;
+
+    z-index: -1;
+  }
+
   .blood-shader {
     position: absolute;
     top:0;
@@ -11,7 +18,7 @@ death-page {
     left: 0;
     right: 0;
 
-    z-index: -1;
+    z-index: 1;
   }
 
   .death-container {
@@ -21,17 +28,6 @@ death-page {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-  }
-
-  .map-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    bottom: 0;
-    height: 100%;
-    z-index: -1;
   }
 
   .address {
@@ -52,13 +48,14 @@ death-page {
   }
 
   .rate {
+    will-change: transform;
     position: absolute;
-    top: 35%;
+    bottom: -65px;
     left: 0;
-    right: 0;
     display: flex;
     align-items: center;
     mix-blend-mode: color-dodge;
+    width: 50%;
 
     >div {
       flex: 1;
@@ -66,8 +63,7 @@ death-page {
 
     .score {
       font-family: 'Lobster', cursive;
-      font-size: 80px;
-      font-size: 103px;
+      font-size: 105px;
       text-align: center;
       color: white;
 
@@ -76,8 +72,8 @@ death-page {
     //#c00000
 
     .line {
-      height: 7px;
-      margin: 0 15px;
+      height: 5px;
+      margin-right: 10px;
       background: white;
       mix-blend-mode: inherit;
     }

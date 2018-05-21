@@ -192,4 +192,103 @@ declare global {
   }
 }
 
+
+declare global {
+
+  namespace StencilComponents {
+    interface OssPage {
+
+    }
+  }
+
+  interface HTMLOssPageElement extends StencilComponents.OssPage, HTMLStencilElement {}
+
+  var HTMLOssPageElement: {
+    prototype: HTMLOssPageElement;
+    new (): HTMLOssPageElement;
+  };
+  interface HTMLElementTagNameMap {
+    'oss-page': HTMLOssPageElement;
+  }
+  interface ElementTagNameMap {
+    'oss-page': HTMLOssPageElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'oss-page': JSXElements.OssPageAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface OssPageAttributes extends HTMLAttributes {
+
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
+    interface SettingsPage {
+
+    }
+  }
+
+  interface HTMLSettingsPageElement extends StencilComponents.SettingsPage, HTMLStencilElement {}
+
+  var HTMLSettingsPageElement: {
+    prototype: HTMLSettingsPageElement;
+    new (): HTMLSettingsPageElement;
+  };
+  interface HTMLElementTagNameMap {
+    'settings-page': HTMLSettingsPageElement;
+  }
+  interface ElementTagNameMap {
+    'settings-page': HTMLSettingsPageElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'settings-page': JSXElements.SettingsPageAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface SettingsPageAttributes extends HTMLAttributes {
+
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
+    interface WhoarePage {
+
+    }
+  }
+
+  interface HTMLWhoarePageElement extends StencilComponents.WhoarePage, HTMLStencilElement {}
+
+  var HTMLWhoarePageElement: {
+    prototype: HTMLWhoarePageElement;
+    new (): HTMLWhoarePageElement;
+  };
+  interface HTMLElementTagNameMap {
+    'whoare-page': HTMLWhoarePageElement;
+  }
+  interface ElementTagNameMap {
+    'whoare-page': HTMLWhoarePageElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'whoare-page': JSXElements.WhoarePageAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface WhoarePageAttributes extends HTMLAttributes {
+
+    }
+  }
+}
+
 declare global { namespace JSX { interface StencilJSX {} } }
