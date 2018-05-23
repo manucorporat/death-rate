@@ -21,6 +21,7 @@ export class DeathPage {
 
   async componentDidLoad() {
     const coord = await getCurrentCoord(0.1, 2);
+    debugger;
     const raster = await process(SOURCES, coord, reduce);
     const media = average(raster);
     this.setScore(Math.floor(media));

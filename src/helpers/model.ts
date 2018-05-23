@@ -77,11 +77,11 @@ export async function insertQuery(hostname : string , user : User){
 
 }
 
-export function getCurrentCoord(angle: number, resolution: number): Promise<Coord> {
+export async function getCurrentCoord(angle: number, resolution: number): Promise<Coord> {
   if (!("geolocation" in navigator)) {
     throw new Error('geolocation not available')
   }
-  return new Promise(resolve => {
+  const prop = new Promise<Coord>(resolve => {
     navigator.geolocation.getCurrentPosition(function(position) {
       resolve({
         lat: position.coords.latitude,
@@ -91,6 +91,17 @@ export function getCurrentCoord(angle: number, resolution: number): Promise<Coor
       });
     });
   });
+
+  try {
+    return await prop;
+  } catch(e) {
+    return {
+      angle: 0.1,
+      lat: 41.662351099999995,
+      log: -4.7061376,
+      resolution: 2
+    };
+  }
 }
 // const coord = {
 //   lat: 41.6623241,

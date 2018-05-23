@@ -1,44 +1,46 @@
 import { Source } from "./model";
 
+const SRC = '//sedac.ciesin.org/geoserver/ows';
+
 export const SOURCES: Source[] = [
   {
     name: 'volcanes',
-    url: '//sedac.ciesin.org/geoserver/ows',
+    url: SRC,
     coverage: 'ndh:ndh-volcano-mortality-risks-distribution'
   },
   {
     name: 'corrimiento',
-    url: '//sedac.ciesin.org/geoserver/ows',
+    url: SRC,
     coverage: 'ndh:ndh-landslide-mortality-risks-distribution'
   },
   {
     name: 'Inundaciones',
-    url: '//sedac.ciesin.org/geoserver/ows',
+    url: SRC,
     coverage: 'ndh:ndh-flood-mortality-risks-distribution',
   },
   {
     name: 'Terremotos',
-    url: '//sedac.ciesin.org/geoserver/ows',
+    url: SRC,
     coverage: 'ndh:ndh-earthquake-mortality-risks-distribution'
   },
   {
     name: 'Sequías',
-    url: '//sedac.ciesin.org/geoserver/ows',
+    url: SRC,
     coverage: 'ndh:ndh-drought-mortality-risks-distribution'
   },
   {
     name: 'Ciclones',
-    url: '//sedac.ciesin.org/geoserver/ows',
+    url: SRC,
     coverage: 'ndh:ndh-cyclone-mortality-risks-distribution'
   },
   {
     name: 'Malnutricion infantil',
-    url: '//sedac.ciesin.org/geoserver/ows',
+    url: SRC,
     coverage: 'povmap:povmap-global-subnational-prevalence-child-malnutrition'
   },
   {
     name: 'Mortalidad infantil',
-    url: '//sedac.ciesin.org/geoserver/ows',
+    url: SRC,
     coverage: 'povmap:povmap-global-subnational-infant-mortality-rates_2000'
   }
   //{
