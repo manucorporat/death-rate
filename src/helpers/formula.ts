@@ -4,14 +4,14 @@ export function reduce(i,
     malnutricion, mortalidad
   ) {
     return (
-      (volcanes[i] +
-      corrimientos[i] +
-      inundaciones[i] +
-      terremotos[i] +
-      sequias[i] +
-      ciclones[i] +
+      (0.9*volcanes[i] +
+      1.2*corrimientos[i] +
+      1.4*inundaciones[i] +
+      1.6*terremotos[i] +
+      1.3*sequias[i] +
+      1.5*ciclones[i] +
   
       malnutricion[i] +
-      mortalidad[i] 
-    )/0.08);
+      1.1*mortalidad[i] 
+    )/0.1);
   }
