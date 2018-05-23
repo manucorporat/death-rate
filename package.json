@@ -16,12 +16,12 @@
     "test.watch": "jest --watch --no-cache"
   },
   "dependencies": {
-    "@ionic/core": "4.0.0-alpha.6",
+    "@ionic/core": "4.0.0-alpha.7",
     "@pro-webcomponents/core": "^0.2.0",
-    "@stencil/core": "0.8.2",
+    "@stencil/core": "0.9.4",
     "geotiff": "^0.4.1",
     "libcoverage": "^0.1.10",
-    "plotty": "^0.3.0"
+    "plotty": "^0.3.1"
   },
   "devDependencies": {
     "@stencil/dev-server": "latest",

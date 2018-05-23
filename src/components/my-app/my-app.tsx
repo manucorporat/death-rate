@@ -12,7 +12,7 @@ export class MyApp {
   render() {
     return (
       <ion-app>
-        <ion-router useHash={false}>
+        <ion-router useHash={true}>
           <ion-route-redirect from='/' to='/death'></ion-route-redirect>
           <ion-route url='/death' component='death-page'></ion-route>
           <ion-route url='/mapa' component='map-page'></ion-route>
@@ -32,15 +32,15 @@ export class MyApp {
             <ion-content main>
               <ion-list>
                 <ion-menu-toggle autoHide={false}>
-                  <ion-item href="/death">Death Rate</ion-item>
+                  <ion-item href="#/death">Death Rate</ion-item>
                 </ion-menu-toggle>
 
                 <ion-menu-toggle autoHide={false}>
-                  <ion-item href="/mapa">Mapa</ion-item>
+                  <ion-item href="#/mapa">Mapa</ion-item>
                 </ion-menu-toggle>
 
                 <ion-menu-toggle autoHide={false}>
-                  <ion-item href="/ajustes">Ajustes</ion-item>
+                  <ion-item href="#/ajustes">Ajustes</ion-item>
                 </ion-menu-toggle>
               </ion-list>
 
@@ -49,11 +49,11 @@ export class MyApp {
                   Para saber más
                 </ion-item-divider>
                 <ion-menu-toggle autoHide={false}>
-                  <ion-item href="/quienes-somos">Quienes somos</ion-item>
+                  <ion-item href="#/quienes-somos">Quienes somos</ion-item>
                 </ion-menu-toggle>
 
                 <ion-menu-toggle autoHide={false}>
-                  <ion-item href="/open-source">Open Source</ion-item>
+                  <ion-item href="#/open-source">Open Source</ion-item>
                 </ion-menu-toggle>
 
               </ion-list>

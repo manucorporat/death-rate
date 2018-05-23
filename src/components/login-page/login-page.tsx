@@ -26,7 +26,7 @@ export class LoginPage {
 
         <canvas></canvas>
 
-        <ion-button href={'/profile/stencil'}>
+        <ion-button href={'#/profile/stencil'}>
           Profile page
         </ion-button>
       </ion-content>
