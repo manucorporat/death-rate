@@ -55,6 +55,7 @@ export async function process(sources: Source[], coord: Coord, reduceFunction: F
 }
 
 async function request(src: Source, coord: Coord) {
+  console.log(src.url);
   const response = await fetch(src.url, {
     method: 'POST',
     body: getBodyRequest(src.coverage, coord)

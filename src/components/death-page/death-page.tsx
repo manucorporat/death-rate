@@ -59,7 +59,7 @@ export class DeathPage {
       deathRate: deathRate,
       coord: coord
     }
-    insertQuery("https://itastdevserver.tel.uva.es/geoserver/", USER);
+    insertQuery("/geoserver", USER);
   }
 
   render() {
