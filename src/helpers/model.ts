@@ -178,3 +178,36 @@ function getInsertQuery(hostname: string, user: User) {
   </wfs:Insert>
 </wfs:Transaction>`;
 }
+
+
+function getQueryQuery (hostname : string, user : User){
+
+  return  `<wfs:GetFeature service="WFS" version="1.0.0"
+  xmlns:wfs="http://www.opengis.net/wfs"
+  xmlns:DeathRate="http://itastdevserver.tel.uva.es/IDE2018A"
+  xmlns:gml="http://www.opengis.net/gml"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmls:ogc="http://www.opengis.net/ogc"
+  xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-basic.xsd http://itastdevserver.tel.uva.es/IDE2018A ${hostname}/wfs/DescribeFeatureType?typename=ide2018a:table_history">
+    <wfs:Query typeName="ide2018a:table_history">
+      <ogc:Filter>
+        <ogc:PropertyIsEqualTo>
+          <ogc:PropertyName>ide2018a:username</ogc:PropertyName>
+          <ogc:Literal>${user.name} </ogc:Literal>
+        </ogc:PropertyIsEqualTo>
+      </ogc:Filter>
+    </wfs:Query> 
+  </wfs:GetFeature>
+  `
+}
+
+export async function queryQuery(hostname : string , user : User){
+  const body = getQueryQuery(hostname, user);
+  const url = `${hostname}/ide2018a/ows`;
+
+  await fetch(url, {
+    method: 'POST',
+    body: body
+  });
+
+}
