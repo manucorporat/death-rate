@@ -21,6 +21,7 @@
     "@stencil/core": "0.9.4",
     "geotiff": "^0.4.1",
     "libcoverage": "^0.1.10",
+    "ol": "^4.6.5",
     "plotty": "^0.3.1"
   },
   "devDependencies": {
@@ -28,6 +29,7 @@
     "@stencil/sass": "0.0.5",
     "@stencil/utils": "latest",
     "@types/jest": "^22.2.3",
+    "@types/ol": "^4.6.1",
     "jest": "^22.4.3"
   },
   "repository": {

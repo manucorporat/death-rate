@@ -1,17 +1,17 @@
-import { Component, Element, State } from '@stencil/core';
+import { Component, Element, State, Prop } from '@stencil/core';
 import { process, getCurrentCoord, insertQuery, Coord } from '../../helpers/model';
-// @ts-ignore
 import { SOURCES } from '../../helpers/sources';
 import { reduce } from '../../helpers/formula';
 import { User } from '../../helpers/model';
-
-declare var ol: any;
 
 @Component({
   tag: 'death-page',
   styleUrl: 'death-page.scss'
 })
 export class DeathPage {
+  private map: any;
+  private proj: any;
+
   @Element() el: HTMLElement;
 
   @State() time = 0;
@@ -19,34 +19,53 @@ export class DeathPage {
   @State() score = 0;
   @State() address: any;
 
+  @Prop({connect: 'ion-loading-controller'}) loadingCtrl: HTMLIonLoadingControllerElement;
+
   async componentDidLoad() {
+    const loading = await this.loadingCtrl.create({
+      content: 'localizando...'
+    });
+
+    await loading.present();
+
+    const {Map, Tile, OSM, View, proj} = await import('../../helpers/maps');
+    this.proj = proj;
+    this.map = new Map({
+      layers: [
+        new Tile({
+          source: new OSM()
+        })
+      ],
+      controls: [],
+      target: this.el.querySelector('.mapa'),
+      view: new View({
+        center: proj.fromLonLat([
+          -4.7061376,
+          41.662351099999995
+        ]),
+        zoom: 15
+      })
+    });
+
     const coord = await getCurrentCoord(0.1, 2);
-    debugger;
     const raster = await process(SOURCES, coord, reduce);
     const media = average(raster);
     this.setScore(Math.floor(media));
     this.insertDeathRate(coord, media);
     this.updateAddress(coord);
 
-    new ol.Map({
-      layers: [
-        new ol.layer.Tile({
-          source: new ol.source.OSM()
-        })
-      ],
-      controls: [],
-      target: this.el.querySelector('.mapa'),
-      view: new ol.View({
-        center: ol.proj.fromLonLat([coord.log, coord.lat]),
-        zoom: 15
-      })
-    });
+    await loading.dismiss();
   }
 
   async updateAddress(coord: Coord) {
     const res = await fetch(`https://nominatim.openstreetmap.org/reverse.php?format=json&lat=${coord.lat}&lon=${coord.log}&zoom=18`);
     const json = await res.json();
     this.address = json.address;
+    const view = this.map.getView();
+    view.setCenter(this.proj.fromLonLat([
+      coord.log,
+      coord.lat
+    ]));
   }
 
   setScore(score: number) {
@@ -92,18 +111,19 @@ export class DeathPage {
 
       <ion-content scrollEnabled={false}>
         <div class="mapa"></div>
-        <pro-glshader
-          class="blood-shader"
-          frag={WAVE_SHADER}
-          uniforms={{
-              '1f:u_time': this.time,
-              '1f:u_y': this.y
-          }}>
-          <div class='rate' style={{transform: `translateY(-${a}px`}}>
-            <div class="line"></div>
-            <div class="score">{this.score}</div>
-          </div>
-        </pro-glshader>
+        {this.score > 0 &&
+          <pro-glshader
+            class="blood-shader"
+            frag={WAVE_SHADER}
+            uniforms={{
+                '1f:u_time': this.time,
+                '1f:u_y': this.y
+            }}>
+            <div class='rate' style={{transform: `translateY(-${a}px`}}>
+              <div class="line"></div>
+              <div class="score">{this.score}</div>
+            </div>
+          </pro-glshader>}
       </ion-content>
     ];
   }

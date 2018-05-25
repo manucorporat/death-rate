@@ -5,9 +5,8 @@ import { getCurrentCoord, process, getExtends, Coord } from '../../helpers/model
 import { SOURCES } from '../../helpers/sources';
 import { reduce } from '../../helpers/formula';
 
-declare var ol: any;
-
 const SIZE = 300;
+
 @Component({
   tag: 'map-page',
   styleUrl: 'map-page.scss'
@@ -15,26 +14,46 @@ const SIZE = 300;
 export class MapPage {
 
   private map: any;
+  private Image: any;
+  private ImageStatic: any;
+
   private layer: any;
+  private proj: any;
   @State() hiddenRefresh = false;
 
   @Prop({connect: 'ion-loading-controller'}) loadingCtrl: HTMLIonLoadingControllerElement;
   @Element() el: HTMLElement;
 
   async componentDidLoad() {
-    const coord = await getCurrentCoord(20, SIZE);
-    this.map = new ol.Map({
+    await import('./maps');
+    // const a = import("../../helpers/maps");
+    const a: any = {};
+
+    const {Map, Tile, OSM, View, Image, ImageStatic, proj} = await a;
+    this.proj = proj;
+    this.Image = Image;
+    this.ImageStatic = ImageStatic;
+    this.map = new Map({
       layers: [
-        new ol.layer.Tile({
-          source: new ol.source.OSM()
+        new Tile({
+          source: new OSM()
         })
       ],
       target: this.el.querySelector('.mapa'),
-      view: new ol.View({
-        center: ol.proj.fromLonLat([coord.log, coord.lat]),
+      view: new View({
+        center: proj.fromLonLat([
+          -4.7061376,
+          41.662351099999995
+        ]),
         zoom: 5
       })
     });
+    const coord = await getCurrentCoord(20, SIZE);
+    const view = this.map.getView();
+    view.setCenter(proj.fromLonLat([
+      coord.log,
+      coord.lat
+    ]));
     this.map.on('movestart', () => {
       this.hiddenRefresh = false;
     })
@@ -51,7 +70,7 @@ export class MapPage {
         const view = this.map.getView();
         const [latMin, latMax, lonMin, lonMax] = r.boundingbox;
         const box = [parseFloat(lonMin), parseFloat(latMin), parseFloat(lonMax), parseFloat(latMax)];
-        const extend = ol.proj.transformExtent(box, 'EPSG:4326', 'EPSG:3857');
+        const extend = this.proj.transformExtent(box, 'EPSG:4326', 'EPSG:3857');
         view.fit(extend, {duration: 300});
       }
     }
@@ -59,9 +78,9 @@ export class MapPage {
 
   async updateMap() {
     const view = this.map.getView();
-    const center = ol.proj.toLonLat(view.getCenter());
+    const center = this.proj.toLonLat(view.getCenter());
     const extend = view.calculateExtent(this.map.getSize());
-    const box = ol.proj.transformExtent(extend, 'EPSG:3857', 'EPSG:4326');
+    const box = this.proj.transformExtent(extend, 'EPSG:3857', 'EPSG:4326');
 
     const angle = Math.max(
       box[2] - box[0],
@@ -77,7 +96,9 @@ export class MapPage {
   }
 
   async recompute(coord: Coord) {
-    const loading = await this.loadingCtrl.create();
+    const loading = await this.loadingCtrl.create({
+      content: 'generando heatmap...'
+    });
     await loading.present();
     const canvas = this.el.querySelector('canvas');
     const raster = await process(SOURCES, coord, reduce);
@@ -98,11 +119,11 @@ export class MapPage {
       const dataURL = canvas.toDataURL();
 
       var extent = getExtends(coord)
-      const imageLayer = new ol.layer.Image({
-        source: new ol.source.ImageStatic({
+      const imageLayer = new this.Image({
+        source: new this.ImageStatic({
           url: dataURL,
           projection: 'EPSG:4326',
-          imageExtent: extent
+          imageExtent: extent as any
         }),
         opacity: 0.8
       });

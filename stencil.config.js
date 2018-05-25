@@ -4,7 +4,6 @@ exports.config = {
   outputTargets: [{
     type: 'www',
     inlineLoaderScript: false,
-    prerenderFilter: () => false
   }],
   globalStyle: 'src/global/app.css',
   enableCache: false,
