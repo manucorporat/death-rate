@@ -1,6 +1,7 @@
 import { Source } from "./model";
 
-const SRC = '//sedac.ciesin.org/geoserver/ows';
+const SRC = 'http://sedac.ciesin.org/geoserver/ows';
+//const SRC = '/proxysedac.php';
 
 export const SOURCES: Source[] = [
   {
@@ -43,14 +44,4 @@ export const SOURCES: Source[] = [
     url: SRC,
     coverage: 'povmap:povmap-global-subnational-infant-mortality-rates_2000'
   }
-  //{
-  //   name: 'Temp Max',
-  //   url: 'http://sedac.ciesin.org/geoserver/ows',
-  //   coverage: 'sdei:sdei-global-summer-lst-2013_day-max-global'
-  // },
-  // {
-  //   name: 'Temp Min',
-  //   url: 'http://sedac.ciesin.org/geoserver/ows',
-  //   coverage: 'sdei:sdei-global-summer-lst-2013_night-min-global'
-  // }
 ];

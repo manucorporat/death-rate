@@ -6,7 +6,6 @@ exports.config = {
     inlineLoaderScript: false,
   }],
   globalStyle: 'src/global/app.css',
-  enableCache: false,
   plugins: [
     sass()
   ]

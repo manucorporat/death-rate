@@ -20,4 +20,37 @@ map-page {
   .hidden-fab {
     transform: translateY(70px)
   }
+
+
+  .rate {
+    will-change: transform;
+    position: absolute;
+    bottom: -65px;
+    left: 0;
+    display: flex;
+    align-items: center;
+    mix-blend-mode: color-dodge;
+    transition: transform 400ms ease-in-out;
+
+    >div {
+      flex: 1;
+    }
+
+    .score {
+      font-family: 'Lobster', cursive;
+      font-size: 90px;
+      text-align: center;
+      color: white;
+
+      mix-blend-mode: inherit;
+    }
+
+    .line {
+      width: 50px;
+      height: 5px;
+      margin-right: 10px;
+      background: white;
+      mix-blend-mode: inherit;
+    }
+  }
 }

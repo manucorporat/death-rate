@@ -1,7 +1,7 @@
 import { Component, Element, Prop, Listen, State } from '@stencil/core';
 // @ts-ignore
 import { plot } from 'plotty';
-import { getCurrentCoord, process, getExtends, Coord } from '../../helpers/model';
+import { getCurrentCoord, calculateCoverage, getExtends, Coord, average } from '../../helpers/model';
 import { SOURCES } from '../../helpers/sources';
 import { reduce } from '../../helpers/formula';
 
@@ -16,20 +16,50 @@ export class MapPage {
   private map: any;
   private Image: any;
   private ImageStatic: any;
-
   private layer: any;
   private proj: any;
-  @State() hiddenRefresh = false;
 
-  @Prop({connect: 'ion-loading-controller'}) loadingCtrl: HTMLIonLoadingControllerElement;
   @Element() el: HTMLElement;
 
-  async componentDidLoad() {
-    await import('./maps');
-    // const a = import("../../helpers/maps");
-    const a: any = {};
+  @Prop({connect: 'ion-loading-controller'}) loadingCtrl: HTMLIonLoadingControllerElement;
 
-    const {Map, Tile, OSM, View, Image, ImageStatic, proj} = await a;
+  @State() time = 0;
+  @State() y = 10;
+  @State() score = 0;
+  @State() address: any;
+  @State() hiddenRefresh = false;
+
+  @Listen('keydown.enter')
+  async onSearch(ev: any) {
+    const value = (ev.target.value as string).trim();
+    if(value.length > 0) {
+      const res = await fetch(`https://nominatim.openstreetmap.org/search/${value}?format=json&addressdetails=1&limit=1`);
+      const results = await res.json();
+      if(results.length > 0) {
+        const r = results[0];
+        const view = this.map.getView();
+        const [latMin, latMax, lonMin, lonMax] = r.boundingbox;
+        const box = [parseFloat(lonMin), parseFloat(latMin), parseFloat(lonMax), parseFloat(latMax)];
+        const extend = this.proj.transformExtent(box, 'EPSG:4326', 'EPSG:3857');
+        view.fit(extend, {duration: 300});
+      }
+    }
+  }
+
+  async componentDidLoad() {
+    const [coord] = await Promise.all([
+      await getCurrentCoord(20, SIZE),
+      await this.loadMap()
+    ]);
+    const view = this.map.getView();
+    view.setCenter(this.proj.fromLonLat([
+      coord.log,
+      coord.lat
+    ]));
+  }
+
+  async loadMap() {
+    const { Map, Tile, OSM, View, Image, ImageStatic, proj } = await import('../../helpers/maps');
     this.proj = proj;
     this.Image = Image;
     this.ImageStatic = ImageStatic;
@@ -48,32 +78,10 @@ export class MapPage {
         zoom: 5
       })
     });
-    const coord = await getCurrentCoord(20, SIZE);
-    const view = this.map.getView();
-    view.setCenter(proj.fromLonLat([
-      coord.log,
-      coord.lat
-    ]));
     this.map.on('movestart', () => {
       this.hiddenRefresh = false;
-    })
-  }
-
-  @Listen('keydown.enter')
-  async onSearch(ev: any) {
-    const value = (ev.target.value as string).trim();
-    if(value.length > 0) {
-      const res = await fetch(`https://nominatim.openstreetmap.org/search/${value}?format=json&addressdetails=1&limit=1`);
-      const results = await res.json();
-      if(results.length > 0) {
-        const r = results[0];
-        const view = this.map.getView();
-        const [latMin, latMax, lonMin, lonMax] = r.boundingbox;
-        const box = [parseFloat(lonMin), parseFloat(latMin), parseFloat(lonMax), parseFloat(latMax)];
-        const extend = this.proj.transformExtent(box, 'EPSG:4326', 'EPSG:3857');
-        view.fit(extend, {duration: 300});
-      }
-    }
+      this.setScore(0);
+    });
   }
 
   async updateMap() {
@@ -101,9 +109,10 @@ export class MapPage {
     });
     await loading.present();
     const canvas = this.el.querySelector('canvas');
-    const raster = await process(SOURCES, coord, reduce);
+    const raster = await calculateCoverage(SOURCES, coord, reduce);
     const min = Math.min(...raster);
     const max = Math.max(...raster);
+    this.setScore(average(raster));
 
     const render = new plot({
       canvas: canvas,
@@ -136,6 +145,10 @@ export class MapPage {
     });
   }
 
+  setScore(score: number) {
+    this.y = this.score = Math.floor(score);
+  }
+
   render() {
     return [
       <ion-header>
@@ -157,6 +170,10 @@ export class MapPage {
       <ion-content scrollEnabled={false}>
         <div class="mapa"/>
         <canvas/>
+        <div class='rate' style={{transform: `translateY(-${this.y}px`}}>
+          <div class="line"></div>
+          <div class="score">{this.score}</div>
+        </div>
         <ion-fab horizontal="center" vertical="bottom" slot="fixed" class={{
           'refresh-fab': true,
           'hidden-fab': this.hiddenRefresh

@@ -30,7 +30,7 @@ function filterRaster(raster: Float32Array, invalid: number): Float32Array{
 }
 
 
-export async function process(sources: Source[], coord: Coord, reduceFunction: Function) {
+export async function calculateCoverage(sources: Source[], coord: Coord, reduceFunction: Function) {
   const results = await Promise.all(
     sources.map(src => request(src, coord))
   )
@@ -114,6 +114,10 @@ export function getExtends(coord: Coord) {
     coord.log - coord.angle, coord.lat - coord.angle,
     coord.log + coord.angle, coord.lat + coord.angle
   ];
+}
+
+export function average(raster: Float32Array) {
+  return raster.reduce((v, acum) => acum + v, 0) / raster.length
 }
 
 function getBodyRequest(coverage: string, coord: Coord, crs = 'EPSG:4326') {
