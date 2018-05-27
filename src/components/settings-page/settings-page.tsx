@@ -29,7 +29,7 @@ export class SettingsPage {
   render() {
     return [
       <ion-header>
-        <ion-toolbar color='danger'>
+        <ion-toolbar color='dark'>
           <ion-buttons slot="start">
             <ion-menu-toggle>
               <ion-button>

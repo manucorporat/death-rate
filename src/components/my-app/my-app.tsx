@@ -36,7 +36,7 @@ export class MyApp {
         <ion-split-pane>
           <ion-menu type="overlay" disabled={!loggedIn}>
             <ion-header>
-              <ion-toolbar color="danger">
+              <ion-toolbar color='dark'>
                 <ion-title>Death Rate</ion-title>
               </ion-toolbar>
             </ion-header>

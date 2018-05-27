@@ -24,7 +24,7 @@ export class MapPage {
   @Prop({connect: 'ion-loading-controller'}) loadingCtrl: HTMLIonLoadingControllerElement;
 
   @State() time = 0;
-  @State() y = 10;
+  @State() y = 0;
   @State() score = 0;
   @State() address: any;
   @State() hiddenRefresh = false;
@@ -150,9 +150,10 @@ export class MapPage {
   }
 
   render() {
+    const y = (this.y === 0) ? -100 : this.y;
     return [
       <ion-header>
-        <ion-toolbar color='danger'>
+        <ion-toolbar color='dark'>
           <ion-buttons slot="start">
             <ion-menu-toggle>
               <ion-button>
@@ -162,7 +163,7 @@ export class MapPage {
           </ion-buttons>
           <ion-title>Heat Map</ion-title>
         </ion-toolbar>
-        <ion-toolbar color="danger">
+        <ion-toolbar color='dark'>
           <ion-searchbar/>
         </ion-toolbar>
       </ion-header>,
@@ -170,7 +171,7 @@ export class MapPage {
       <ion-content scrollEnabled={false}>
         <div class="mapa"/>
         <canvas/>
-        <div class='rate' style={{transform: `translateY(-${this.y}px`}}>
+        <div class='rate' style={{transform: `translateY(${-y}px`}}>
           <div class="line"></div>
           <div class="score">{this.score}</div>
         </div>

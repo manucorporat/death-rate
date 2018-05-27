@@ -11,7 +11,7 @@ export class LoginPage {
   render() {
     return [
       <ion-header>
-        <ion-toolbar color='danger'>
+        <ion-toolbar color='dark'>
           <ion-title>Death Rate</ion-title>
         </ion-toolbar>
       </ion-header>,

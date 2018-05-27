@@ -93,7 +93,7 @@ export class DeathPage {
 
     return [
       <ion-header>
-        <ion-toolbar color='danger'>
+        <ion-toolbar color='dark'>
           <ion-buttons slot="start">
             <ion-menu-toggle>
               <ion-button>
@@ -103,7 +103,7 @@ export class DeathPage {
           </ion-buttons>
           <ion-title>Tu localización</ion-title>
         </ion-toolbar>
-        {this.address && <ion-toolbar color='danger'>
+        {this.address && <ion-toolbar color='dark'>
           <div class='address'>
               <p>{this.address.road}</p>
               <p>{this.address.county}, {this.address.postcode}</p>

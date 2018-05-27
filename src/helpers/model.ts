@@ -227,7 +227,11 @@ export async function queryQuery(hostname : string , user : User){
 }
 
 export function getSetting(name: string) {
-  return JSON.parse(localStorage.getItem(name));
+  try {
+    return JSON.parse(localStorage.getItem(name));
+  } catch {
+    return undefined;
+  }
 }
 
 export function setSetting(name: string, value: any) {
