@@ -1,4 +1,5 @@
 import { Component, Element, State, Watch } from '@stencil/core';
+import { getSetting, setSetting } from '../../helpers/model';
 
 @Component({
   tag: 'settings-page',
@@ -84,12 +85,4 @@ export class SettingsPage {
       </ion-content>
     ];
   }
-}
-
-function getSetting(name: string) {
-  return JSON.parse(localStorage.getItem(name));
-}
-
-function setSetting(name: string, value: any) {
-  localStorage.setItem(name, JSON.stringify(value));
 }

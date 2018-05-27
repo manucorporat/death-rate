@@ -2,6 +2,7 @@ import '@ionic/core';
 import '@pro-webcomponents/core';
 
 import { Component } from '@stencil/core';
+import { getSetting } from '../../helpers/model';
 
 @Component({
   tag: 'my-app',
@@ -9,9 +10,20 @@ import { Component } from '@stencil/core';
 export class MyApp {
 
   render() {
+    const loggedIn = !!getSetting('logged_in');
     return (
       <ion-app>
         <ion-router useHash={true}>
+          { loggedIn
+            ? [
+              <ion-route-redirect from="/intro" to="/mapa"/>,
+              <ion-route-redirect from="/" to="/mapa"/>
+            ]
+            : [
+              <ion-route-redirect from="/" to="intro"/>,
+              <ion-route-redirect from="/*" to="intro"/>
+            ]
+          }
           <ion-route url='/death' component='death-page'></ion-route>
           <ion-route url='/mapa' component='map-page'></ion-route>
           <ion-route url='/quienes-somos' component='whoare-page'></ion-route>
@@ -19,11 +31,10 @@ export class MyApp {
           <ion-route url='/ajustes' component='settings-page'></ion-route>
           <ion-route url='/intro' component='landing-page'></ion-route>
           <ion-route url='/data' component='settings-page'></ion-route>
-
         </ion-router>
 
         <ion-split-pane>
-          <ion-menu type="overlay">
+          <ion-menu type="overlay" disabled={!loggedIn}>
             <ion-header>
               <ion-toolbar color="danger">
                 <ion-title>Death Rate</ion-title>

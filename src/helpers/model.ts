@@ -225,3 +225,11 @@ export async function queryQuery(hostname : string , user : User){
   });
 
 }
+
+export function getSetting(name: string) {
+  return JSON.parse(localStorage.getItem(name));
+}
+
+export function setSetting(name: string, value: any) {
+  localStorage.setItem(name, JSON.stringify(value));
+}

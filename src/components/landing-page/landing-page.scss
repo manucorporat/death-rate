@@ -1,5 +1,40 @@
-app-home {
-  ion-scroll {
-    padding: 15px;
+landing-page {
+  img {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+  }
+
+  .title {
+    color: white;
+    font-family: 'Lobster', cursive;
+    font-size: 93px;
+    text-align: center;
+    line-height: 1;
+    margin-top: 75px;
+  }
+
+  .message {
+    width: 317px;
+    color: #b3b3b3;
+    line-height: 2;
+    text-align: center;
+    font-size: 23px;
+    margin: 0 auto;
+    margin-top: 21px;
+    font-family: 'Lobster', cursive;
+  }
+
+  ion-button {
+    position: absolute;
+    bottom: 39px;
+    left: 50px;
+    right: 50px;
   }
 }
