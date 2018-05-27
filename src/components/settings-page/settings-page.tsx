@@ -17,7 +17,6 @@ export class SettingsPage {
   @State() peso: number = getSetting('peso');
 
   @Watch('nombre')
-  @Watch('apellidos')
   @Watch('genero')
   @Watch('fechaNacimiento')
   @Watch('altura')
@@ -44,13 +43,8 @@ export class SettingsPage {
       <ion-content>
         <ion-list>
           <ion-item>
-            <ion-label position="floating">Nombre</ion-label>
+            <ion-label position="floating">Nombre Completo</ion-label>
             <ion-input value={this.nombre} onIonChange={(ev) => this.nombre = ev.detail.value}></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-label position="floating">Apellidos</ion-label>
-            <ion-input value={this.apellidos} onIonChange={(ev) => this.apellidos = ev.detail.value}></ion-input>
           </ion-item>
 
           <ion-item>

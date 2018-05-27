@@ -1,5 +1,5 @@
 import { Component, Element, State, Prop } from '@stencil/core';
-import { calculateCoverage, getCurrentCoord, insertQuery, Coord, average } from '../../helpers/model';
+import { calculateCoverage, getCurrentCoord, insertQuery, Coord, average, getSetting } from '../../helpers/model';
 import { SOURCES } from '../../helpers/sources';
 import { reduce } from '../../helpers/formula';
 import { User } from '../../helpers/model';
@@ -75,7 +75,7 @@ export class DeathPage {
 
   async insertDeathRate(coord : Coord, deathRate : number){
     const USER: User = {
-      name: 'prueba',
+      name: getSetting('nombre') || 'unknown',
       deathRate: deathRate,
       coord: coord
     }
