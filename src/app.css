@@ -1,0 +1,9 @@
+@import "~@ionic/core/css/normalize.css";
+@import "~@ionic/core/css/structure.css";
+@import "~@ionic/core/css/colors.css";
+
+:root {
+  --ion-item-border-color-rgb: 255, 255, 255;
+  --ion-background-color: black;
+  --ion-text-color: #949494;
+}
