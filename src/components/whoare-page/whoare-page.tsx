@@ -2,38 +2,32 @@ import { Component, Element, State, Listen } from '@stencil/core';
 
 const TEAM = [
   {
-    name: 'Juan de Castro',
-    bio: 'Profesor de la universidad de Valladolid, nunca se da por vencido explicando la diferencia entre EPSG:4326 y EPSG:3857.',
-    img1: 'assets/person-juan.jpg',
-    img2: 'assets/person-juan.jpg',
-  },
-  {
     name: 'Manu Mtz.-Almeida',
-    bio: '',
-    img1: 'assets/person-juan.jpg',
-    img2: 'assets/person-juan.jpg',
+    bio: 'Litigante bachiller de meliflua elocuencia y resiliencia ante las perturbaciones',
+    img1: 'assets/manu-1.jpg',
+    img2: 'assets/manu-2.jpg',
   },
   {
-    name: 'Juan de Castro',
-    bio: '',
-    img1: 'assets/person-juan.jpg',
-    img2: 'assets/person-juan.jpg',
+    name: 'Pablo Eliseo',
+    bio: 'Sempiterno educando de ideas nefelibatas que no se amedrenta ante ninguna limerencia',
+    img1: 'assets/pablo-1.jpg',
+    img2: 'assets/pablo-2.jpg',
   },
   {
-    name: 'Juan de Castro',
-    bio: '',
-    img1: 'assets/person-juan.jpg',
-    img2: 'assets/person-juan.jpg',
+    name: 'Dario Yuste',
+    bio: 'Proactivo condiscípulo de caducifolio denuedo, siempre yuxtapuesto a la opinión más tangente',
+    img1: 'assets/dario-1.jpg',
+    img2: 'assets/dario-2.jpg',
   },
   {
-    name: 'Juan de Castro',
-    bio: '',
-    img1: 'assets/person-juan.jpg',
-    img2: 'assets/person-juan.jpg',
+    name: 'Javier Pérez',
+    bio: 'Inmarcesible colegial de acendradas epifanías e inconmensurable ataraxia',
+    img1: 'assets/javier-1.jpg',
+    img2: 'assets/javier-2.jpg',
   }
 ];
 
-const MODES = ['mode1', 'mode2', 'mode3', 'mode4', 'mode5'];
+const MODES = ['mode1', 'mode2', 'mode3', 'mode4'];
 
 @Component({
   tag: 'whoare-page',

@@ -1,11 +1,27 @@
 import { Component, Element, Prop, Listen, State } from '@stencil/core';
 // @ts-ignore
 import { plot } from 'plotty';
-import { getCurrentCoord, calculateCoverage, getExtends, Coord, average } from '../../helpers/model';
+import { getCurrentCoord, calculateCoverage, getExtends, Coord, average, User, getUser, queryQuery } from '../../helpers/model';
 import { SOURCES } from '../../helpers/sources';
 import { reduce } from '../../helpers/formula';
 
+import Feature from 'ol/Feature';
+import Point from 'ol/geom/Point';
+import Style from 'ol/style/Style';
+import Icon from 'ol/style/Icon';
+import Vector from 'ol/source/Vector';
+import {default as VectorLayer} from 'ol/layer/Vector';
+
 const SIZE = 300;
+
+const ICON_STYLE = new Style({
+  image: new Icon({
+    anchor: [0.5, 0.5],
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'fraction',
+    src: 'assets/skull.png'
+  })
+});
 
 @Component({
   tag: 'map-page',
@@ -18,6 +34,7 @@ export class MapPage {
   private ImageStatic: any;
   private layer: any;
   private proj: any;
+  private vectorSource: any;
 
   @Element() el: HTMLElement;
 
@@ -56,6 +73,10 @@ export class MapPage {
       coord.log,
       coord.lat
     ]));
+
+    const user = getUser(100, coord);
+    const markers = await queryQuery(user);
+    markers.forEach(mark => this.addMarker(mark));
   }
 
   async loadMap() {
@@ -63,13 +84,21 @@ export class MapPage {
     this.proj = proj;
     this.Image = Image;
     this.ImageStatic = ImageStatic;
+    this.vectorSource = new Vector({
+      features: []
+    });
+
+    const element = this.el.querySelector('.mapa');
     this.map = new Map({
       layers: [
         new Tile({
           source: new OSM()
+        }),
+        new VectorLayer({
+          source: this.vectorSource
         })
       ],
-      target: this.el.querySelector('.mapa'),
+      target: element,
       view: new View({
         center: proj.fromLonLat([
           -4.7061376,
@@ -81,6 +110,12 @@ export class MapPage {
     this.map.on('movestart', () => {
       this.hiddenRefresh = false;
       this.setScore(0);
+    });
+    this.map.on('click', (evt) => {
+      const feature = this.map.forEachFeatureAtPixel(evt.pixel, (f) => f);
+      if (feature) {
+        this.setScore(feature.getProperties().deathRate);
+      }
     });
   }
 
@@ -120,7 +155,7 @@ export class MapPage {
       width: SIZE,
       height: SIZE,
       domain: [min, max],
-      colorScale: "magma"
+      colorScale: 'magma'
     });
     render.render();
 
@@ -143,6 +178,17 @@ export class MapPage {
       this.map.addLayer(imageLayer);
       loading.dismiss();
     });
+  }
+
+  private addMarker(user: User) {
+    const iconFeature = new Feature({
+      geometry: new Point(this.proj.fromLonLat([user.coord.log, user.coord.lat])),
+      name: user.username,
+      deathRate: user.deathRate,
+    });
+    iconFeature.setStyle([ICON_STYLE]);
+
+    this.vectorSource.addFeature(iconFeature);
   }
 
   setScore(score: number) {

@@ -1,8 +1,7 @@
 import { Component, Element, State, Prop } from '@stencil/core';
-import { calculateCoverage, getCurrentCoord, insertQuery, Coord, average, getSetting } from '../../helpers/model';
+import { calculateCoverage, getCurrentCoord, insertQuery, Coord, average, getUser } from '../../helpers/model';
 import { SOURCES } from '../../helpers/sources';
 import { reduce } from '../../helpers/formula';
-import { User } from '../../helpers/model';
 import { WAVE_SHADER } from '../../helpers/shader';
 
 @Component({
@@ -73,13 +72,8 @@ export class DeathPage {
     this.y = this.score = Math.floor(score);
   }
 
-  async insertDeathRate(coord : Coord, deathRate : number){
-    const USER: User = {
-      name: getSetting('nombre') || 'unknown',
-      deathRate: deathRate,
-      coord: coord
-    }
-    insertQuery("/geoserver", USER);
+  async insertDeathRate(coord : Coord, deathRate : number) {
+    return insertQuery(getUser(deathRate, coord));
   }
 
   render() {

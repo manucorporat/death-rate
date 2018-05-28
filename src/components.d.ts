@@ -97,39 +97,6 @@ declare global {
 declare global {
 
   namespace StencilComponents {
-    interface LoginPage {
-
-    }
-  }
-
-  interface HTMLLoginPageElement extends StencilComponents.LoginPage, HTMLStencilElement {}
-
-  var HTMLLoginPageElement: {
-    prototype: HTMLLoginPageElement;
-    new (): HTMLLoginPageElement;
-  };
-  interface HTMLElementTagNameMap {
-    'login-page': HTMLLoginPageElement;
-  }
-  interface ElementTagNameMap {
-    'login-page': HTMLLoginPageElement;
-  }
-  namespace JSX {
-    interface IntrinsicElements {
-      'login-page': JSXElements.LoginPageAttributes;
-    }
-  }
-  namespace JSXElements {
-    export interface LoginPageAttributes extends HTMLAttributes {
-
-    }
-  }
-}
-
-
-declare global {
-
-  namespace StencilComponents {
     interface MapPage {
 
     }
@@ -187,39 +154,6 @@ declare global {
   }
   namespace JSXElements {
     export interface MyAppAttributes extends HTMLAttributes {
-
-    }
-  }
-}
-
-
-declare global {
-
-  namespace StencilComponents {
-    interface OssPage {
-
-    }
-  }
-
-  interface HTMLOssPageElement extends StencilComponents.OssPage, HTMLStencilElement {}
-
-  var HTMLOssPageElement: {
-    prototype: HTMLOssPageElement;
-    new (): HTMLOssPageElement;
-  };
-  interface HTMLElementTagNameMap {
-    'oss-page': HTMLOssPageElement;
-  }
-  interface ElementTagNameMap {
-    'oss-page': HTMLOssPageElement;
-  }
-  namespace JSX {
-    interface IntrinsicElements {
-      'oss-page': JSXElements.OssPageAttributes;
-    }
-  }
-  namespace JSXElements {
-    export interface OssPageAttributes extends HTMLAttributes {
 
     }
   }
