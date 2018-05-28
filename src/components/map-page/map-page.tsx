@@ -169,6 +169,7 @@ export class MapPage {
       </ion-header>,
 
       <ion-content scrollEnabled={false}>
+        <img class="wait-meme" src="assets/wait.svg"/>
         <div class="mapa"/>
         <canvas/>
         <div class='rate' style={{transform: `translateY(${-y}px`}}>

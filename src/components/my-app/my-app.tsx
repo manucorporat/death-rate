@@ -54,6 +54,13 @@ export class MyApp {
                 <ion-menu-toggle autoHide={false}>
                   <ion-item href="#/ajustes">Ajustes</ion-item>
                 </ion-menu-toggle>
+
+                <ion-item-divider>
+                  Más información
+                </ion-item-divider>
+                <ion-menu-toggle autoHide={false}>
+                  <ion-item href="#/quienes-somos">Equipo</ion-item>
+                </ion-menu-toggle>
               </ion-list>
 
             </ion-content>

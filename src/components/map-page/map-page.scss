@@ -21,6 +21,15 @@ map-page {
     transform: translateY(70px)
   }
 
+  .wait-meme {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0.08;
+    pointer-events: none;
+    z-index: -1;
+  }
 
   .rate {
     will-change: transform;
