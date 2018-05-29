@@ -2,7 +2,7 @@ import { Coord, Source, User } from "./model";
 // @ts-ignore
 import { parse } from 'geotiff';
 
-const HOSTNAME = 'http://itastdevserver.tel.uva.es';
+const HOSTNAME = '';
 const AUTH = 'Basic Z3J1cG8yMDE4QTpncjE4QXh6';
 
 export async function requestAddressForCoord(coord: Coord) {
