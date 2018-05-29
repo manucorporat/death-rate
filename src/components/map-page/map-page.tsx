@@ -1,7 +1,7 @@
 import { Component, Element, Prop, Listen, State } from '@stencil/core';
 // @ts-ignore
 import { plot } from 'plotty';
-import { getCurrentCoord, calculateCoverage, getExtends, Coord, average, User, getUser, queryQuery } from '../../helpers/model';
+import { getCurrentCoord, calculateCoverage, getExtends, Coord, average, User, getUser } from '../../helpers/model';
 import { SOURCES } from '../../helpers/sources';
 import { reduce } from '../../helpers/formula';
 
@@ -11,6 +11,7 @@ import Style from 'ol/style/Style';
 import Icon from 'ol/style/Icon';
 import Vector from 'ol/source/Vector';
 import {default as VectorLayer} from 'ol/layer/Vector';
+import { requestQueryUsers, requestCoordForName } from '../../helpers/requests';
 
 const SIZE = 300;
 
@@ -50,10 +51,8 @@ export class MapPage {
   async onSearch(ev: any) {
     const value = (ev.target.value as string).trim();
     if(value.length > 0) {
-      const res = await fetch(`https://nominatim.openstreetmap.org/search/${value}?format=json&addressdetails=1&limit=1`);
-      const results = await res.json();
-      if(results.length > 0) {
-        const r = results[0];
+      const r = await requestCoordForName(value);
+      if(r) {
         const view = this.map.getView();
         const [latMin, latMax, lonMin, lonMax] = r.boundingbox;
         const box = [parseFloat(lonMin), parseFloat(latMin), parseFloat(lonMax), parseFloat(latMax)];
@@ -68,6 +67,7 @@ export class MapPage {
       await getCurrentCoord(20, SIZE),
       await this.loadMap()
     ]);
+
     const view = this.map.getView();
     view.setCenter(this.proj.fromLonLat([
       coord.log,
@@ -75,28 +75,23 @@ export class MapPage {
     ]));
 
     const user = getUser(100, coord);
-    const markers = await queryQuery(user);
+    const markers = await requestQueryUsers(user);
     markers.forEach(mark => this.addMarker(mark));
   }
 
   async loadMap() {
+    const element = this.el.querySelector('.mapa');
     const { Map, Tile, OSM, View, Image, ImageStatic, proj } = await import('../../helpers/maps');
+
     this.proj = proj;
     this.Image = Image;
     this.ImageStatic = ImageStatic;
-    this.vectorSource = new Vector({
-      features: []
-    });
+    this.vectorSource = new Vector({features: []});
 
-    const element = this.el.querySelector('.mapa');
-    this.map = new Map({
+    const map = this.map = new Map({
       layers: [
-        new Tile({
-          source: new OSM()
-        }),
-        new VectorLayer({
-          source: this.vectorSource
-        })
+        new Tile({ source: new OSM() }),
+        new VectorLayer({ source: this.vectorSource })
       ],
       target: element,
       view: new View({
@@ -107,11 +102,11 @@ export class MapPage {
         zoom: 5
       })
     });
-    this.map.on('movestart', () => {
+    map.on('movestart', () => {
       this.hiddenRefresh = false;
       this.setScore(0);
     });
-    this.map.on('click', (evt) => {
+    map.on('click', (evt: any) => {
       const feature = this.map.forEachFeatureAtPixel(evt.pixel, (f) => f);
       if (feature) {
         this.setScore(feature.getProperties().deathRate);
@@ -119,7 +114,7 @@ export class MapPage {
     });
   }
 
-  async updateMap() {
+  async updateHeatmap() {
     const view = this.map.getView();
     const center = this.proj.toLonLat(view.getCenter());
     const extend = view.calculateExtent(this.map.getSize());
@@ -129,7 +124,7 @@ export class MapPage {
       box[2] - box[0],
       box[3] - box[1]
     );
-    this.recompute({
+    this.computeHeatmap({
       log: center[0],
       lat: center[1],
       angle: angle / 2.0,
@@ -138,7 +133,7 @@ export class MapPage {
     this.hiddenRefresh = true;
   }
 
-  async recompute(coord: Coord) {
+  async computeHeatmap(coord: Coord) {
     const loading = await this.loadingCtrl.create({
       content: 'generando heatmap...'
     });
@@ -191,7 +186,7 @@ export class MapPage {
     this.vectorSource.addFeature(iconFeature);
   }
 
-  setScore(score: number) {
+  private setScore(score: number) {
     this.y = this.score = Math.floor(score);
   }
 
@@ -226,7 +221,7 @@ export class MapPage {
           'refresh-fab': true,
           'hidden-fab': this.hiddenRefresh
           }}>
-          <ion-fab-button color="light" onClick={this.updateMap.bind(this)}>
+          <ion-fab-button color="light" onClick={this.updateHeatmap.bind(this)}>
             <ion-icon name="refresh"></ion-icon>
           </ion-fab-button>
         </ion-fab>

@@ -1,7 +1,7 @@
 import { Source } from "./model";
 
 const SRC = 'http://sedac.ciesin.org/geoserver/ows';
-//const SRC = '/proxysedac.php';
+// const SRC = '/proxysedac.php';
 
 export const SOURCES: Source[] = [
   {

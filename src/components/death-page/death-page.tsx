@@ -1,8 +1,9 @@
 import { Component, Element, State, Prop } from '@stencil/core';
-import { calculateCoverage, getCurrentCoord, insertQuery, Coord, average, getUser } from '../../helpers/model';
+import { calculateCoverage, getCurrentCoord, Coord, average, getUser } from '../../helpers/model';
 import { SOURCES } from '../../helpers/sources';
 import { reduce } from '../../helpers/formula';
 import { WAVE_SHADER } from '../../helpers/shader';
+import { requestInsertUser, requestAddressForCoord } from '../../helpers/requests';
 
 @Component({
   tag: 'death-page',
@@ -28,39 +29,40 @@ export class DeathPage {
 
     await loading.present();
 
-    const {Map, Tile, OSM, View, proj} = await import('../../helpers/maps');
-    this.proj = proj;
-    this.map = new Map({
-      layers: [
-        new Tile({
-          source: new OSM()
+    try {
+      const {Map, Tile, OSM, View, proj} = await import('../../helpers/maps');
+      this.proj = proj;
+      this.map = new Map({
+        layers: [
+          new Tile({
+            source: new OSM()
+          })
+        ],
+        controls: [],
+        target: this.el.querySelector('.mapa'),
+        view: new View({
+          center: proj.fromLonLat([
+            -4.7061376,
+            41.662351099999995
+          ]),
+          zoom: 15
         })
-      ],
-      controls: [],
-      target: this.el.querySelector('.mapa'),
-      view: new View({
-        center: proj.fromLonLat([
-          -4.7061376,
-          41.662351099999995
-        ]),
-        zoom: 15
-      })
-    });
+      });
+      const coord = await getCurrentCoord(0.1, 2);
+      const raster = await calculateCoverage(SOURCES, coord, reduce);
+      const media = average(raster);
+      this.setScore(media);
+      this.insertDeathRate(coord, media);
+      this.updateAddress(coord);
 
-    const coord = await getCurrentCoord(0.1, 2);
-    const raster = await calculateCoverage(SOURCES, coord, reduce);
-    const media = average(raster);
-    this.setScore(media);
-    this.insertDeathRate(coord, media);
-    this.updateAddress(coord);
+    } catch {}
 
     await loading.dismiss();
   }
 
   async updateAddress(coord: Coord) {
-    const res = await fetch(`https://nominatim.openstreetmap.org/reverse.php?format=json&lat=${coord.lat}&lon=${coord.log}&zoom=18`);
-    const json = await res.json();
-    this.address = json.address;
+    const address = await requestAddressForCoord(coord);
+    this.address = address;
     const view = this.map.getView();
     view.setCenter(this.proj.fromLonLat([
       coord.log,
@@ -73,7 +75,7 @@ export class DeathPage {
   }
 
   async insertDeathRate(coord : Coord, deathRate : number) {
-    return insertQuery(getUser(deathRate, coord));
+    return requestInsertUser(getUser(deathRate, coord));
   }
 
   render() {
