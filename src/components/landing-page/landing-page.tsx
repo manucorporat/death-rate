@@ -32,7 +32,7 @@ export class LandingPage {
         <h1 class="title">Death Rate</h1>
         <p class="message">
           Localiza a nivel global los lugares más peligrosos,
-          averigua las micromuertes a tus al rededor y las de tus amigos!
+          averigua las micromuertes a tu alrededor y las de tus amigos!
         </p>
         <ion-button
           shape="round"
