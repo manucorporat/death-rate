@@ -6,7 +6,7 @@ import { SOURCES } from '../../helpers/sources';
 import { reduce } from '../../helpers/formula';
 
 import Feature from 'ol/Feature';
-import Point from 'ol/geom/Point';
+import { Point } from 'ol/geom';
 import Style from 'ol/style/Style';
 import Icon from 'ol/style/Icon';
 import Vector from 'ol/source/Vector';
